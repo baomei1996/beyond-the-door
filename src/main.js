@@ -14,6 +14,7 @@ renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
 
 // Scene
 const scene = new THREE.Scene();
+scene.background = new THREE.Color("#070114");
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
@@ -25,6 +26,31 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.y = 1.5;
 camera.position.z = 4;
 scene.add(camera);
+
+// Particles
+const geometry = new THREE.BufferGeometry();
+const count = 1000;
+const positions = new Float32Array(count * 3);
+
+for (let i = 0; i < positions.length; i++) {
+    positions[i] = (Math.random() - 0.5) * 15;
+}
+
+geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+const textureLoader = new THREE.TextureLoader();
+const particleTexture = textureLoader.load("/images/star.png");
+
+const material = new THREE.PointsMaterial({
+    size: 0.1,
+    map: particleTexture,
+    transparent: true,
+    alphaMap: particleTexture,
+    depthWrite: false,
+});
+
+const particles = new THREE.Points(geometry, material);
+scene.add(particles);
 
 // Light
 const ambientLight = new THREE.AmbientLight("white", 0.5);
@@ -40,12 +66,6 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
 // Mesh
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshStandardMaterial({
-    color: "seagreen",
-});
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
 
 // 그리기
 const clock = new THREE.Clock();
