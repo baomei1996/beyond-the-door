@@ -24,7 +24,7 @@ const camera = new THREE.PerspectiveCamera(
     1000
 );
 camera.position.y = 1.5;
-camera.position.z = 4;
+camera.position.z = 12;
 scene.add(camera);
 
 // Particles
