@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { DOOR_LIST } from "./constants";
+import { Door } from "./components/Door";
 
 // ----- 주제: Beyond the door
 
@@ -44,9 +46,11 @@ const particleTexture = textureLoader.load("/images/star.png");
 const material = new THREE.PointsMaterial({
     size: 0.1,
     map: particleTexture,
+    color: new THREE.Color("gold"),
     transparent: true,
     alphaMap: particleTexture,
     depthWrite: false,
+    metalness: 5,
 });
 
 const particles = new THREE.Points(geometry, material);
@@ -65,7 +69,16 @@ scene.add(directionalLight);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-// Mesh
+// Door
+DOOR_LIST.forEach((modelSrc) => {
+    const door = new Door({
+        scene,
+        modelSrc,
+        x: -10,
+        z: 0,
+        height: 2,
+    });
+});
 
 // 그리기
 const clock = new THREE.Clock();
